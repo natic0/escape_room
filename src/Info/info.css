@@ -1,0 +1,21 @@
+.name {
+    font-size: 10rem;
+    color: rgb(205, 205, 205);
+    font-family: 'Roboto', sans-serif;
+    font-weight: 900;
+    display: flex;
+    justify-content: center;
+    margin: 0;
+    line-height: 0.8;
+}
+
+.text-container {
+    position: absolute;
+    top: 49%;
+    left: 39%; /* Ajusta este valor para posicionar el texto a la izquierda */
+    transform: translate(-50%, -50%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 2; /* Coloca el texto adelante de los cohetes (mayor que el z-index de los cohetes) */
+}
