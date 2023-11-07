@@ -1,0 +1,11 @@
+Model Information:
+* title:	Rock Wall Basement with Baked Lighting
+* source:	https://sketchfab.com/3d-models/rock-wall-basement-with-baked-lighting-71912d43c4724e3ab12d9bf2be80f728
+* author:	jimbogies (https://sketchfab.com/jimbogies)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Rock Wall Basement with Baked Lighting" (https://sketchfab.com/3d-models/rock-wall-basement-with-baked-lighting-71912d43c4724e3ab12d9bf2be80f728) by jimbogies (https://sketchfab.com/jimbogies) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
