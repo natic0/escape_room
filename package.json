@@ -14,12 +14,13 @@
   "dependencies": {
     "@react-three/drei": "^9.88.11",
     "@react-three/fiber": "^8.15.10",
-    "@types/three": "^0.158.1",
+    "@types/three": "^0.158.2",
+    "axios": "^1.6.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-hook-form": "^7.48.2",
     "react-router-dom": "^6.17.0",
     "react-scripts": "^5.0.1",
-    "react-sound": "^1.2.0",
     "react-use": "^17.4.0",
     "three": "^0.158.0",
     "three-orbitcontrols": "^2.110.3"

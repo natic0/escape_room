@@ -1,15 +1,13 @@
-import Room from "./World/Bedroom";
-import Lights from "./World/Lights";
+import ProjectRoutes from "./routes/ProjectRoutes";
+import GameStartMessage from "./world/staging/StartGame"; // Importa el nuevo componente
 
 const App = () => {
   return (
     <>
-      <Room/>
-      <Lights/>
+      <ProjectRoutes />
+      <GameStartMessage /> {/* Agrega el mensaje de inicio */}
     </>
-
   );
 };
-
 
 export default App;
