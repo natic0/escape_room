@@ -14,5 +14,5 @@
 - Janiert Sebastián Salas Castillo - 201941265
 - Marcelo Alejandro García Millán - 201941427
 - Marcela Mazo Castro - 201843612
-- Angie Natalia Córdoba - XXXXXXXXX
-- Juan Majín - 2040177
+- Angie Natalia Córdoba - 202124366
+- Juan José Majín - 202040177
