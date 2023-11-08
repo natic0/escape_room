@@ -15,4 +15,4 @@
 - Marcelo Alejandro García Millán - 201941427
 - Marcela Mazo Castro - 201843612
 - Angie Natalia Córdoba - XXXXXXXXX
-- Juan Majín - XXXXXXXXX
+- Juan Majín - 2040177
