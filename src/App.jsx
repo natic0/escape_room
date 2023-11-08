@@ -1,15 +1,7 @@
-import Room from "./World/Bedroom";
-import Lights from "./World/Lights";
+import ProjectRoutes from "./routes/ProjectRoutes";
 
 const App = () => {
-  return (
-    <>
-      <Room/>
-      <Lights/>
-    </>
-
-  );
+  return <ProjectRoutes />;
 };
-
 
 export default App;
