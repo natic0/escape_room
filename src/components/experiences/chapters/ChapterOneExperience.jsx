@@ -1,6 +1,6 @@
 import React from "react";
-import Bedroom from "../../../world/rooms/Bedroom";
-import Lights from "../../../world/staging/Lights";
+import Bedroom from "../../../World/rooms/Bedroom";
+import Lights from "../../../World/staging/Lights";
 
 const ChapterOneExperience = () => {
   return (
