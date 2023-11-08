@@ -80,10 +80,10 @@ const Lights = () => {
       {ambientLightOn && <ambientLight intensity={0.5} />}
       {pointLightsOn && (
         <>
-          <pointLight position={[4, 1, -5]} intensity={30} />
-          <pointLight position={[-5, 1, -5]} intensity={30} />
-          <pointLight position={[4, 1, 1]} intensity={30} />
-          <pointLight position={[4, 6, -11.5]} intensity={30} />
+        <pointLight position={[4, 1, -5]} intensity={30} />
+        <pointLight position={[-5, 1, -5]} intensity={30} />
+        <pointLight position={[4, 1, 1]} intensity={30} />
+        <pointLight position={[4, 6, -11.5]} intensity={30} />
         </>
       )}
     </>

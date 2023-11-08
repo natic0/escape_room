@@ -14,6 +14,7 @@ const Bedroom = () => {
   const isDragging = useRef(false);
   const prevMouseX = useRef(null);
   const isMovingForward = useRef(false);
+  const isRotatingCamera = useRef(false);
   const isCameraShaking = useRef(false);
   const audioRef = useRef(new Audio(woodSound));
   const audioEndRef = useRef(new Audio(woodEndSound));
@@ -29,8 +30,17 @@ const Bedroom = () => {
 
   const [elapsedTime, setElapsedTime] = useState(0); // Nuevo estado para el tiempo transcurrido.
 
-  // Estado para registrar si se ha dado el primer clic izquierdo.
-  const [firstLeftClick, setFirstLeftClick] = useState(false);
+  // Nuevo estado para registrar si se está presionando el clic izquierdo.
+  const [isLeftClickPressed, setIsLeftClickPressed] = useState(false);
+
+  // Nuevo estado para registrar si se está presionando el clic derecho.
+  const [isRightClickPressed, setIsRightClickPressed] = useState(false);
+
+  // Nuevo estado para registrar si se soltó el clic izquierdo.
+  const [isLeftClickReleased, setIsLeftClickReleased] = useState(false);
+
+  // Nuevo estado para controlar si el sonido de fondo se ha iniciado.
+  const [isBackgroundSoundStarted, setIsBackgroundSoundStarted] = useState(false);
 
   // Función para reiniciar el sonido de fondo con un retraso aleatorio.
   const restartBackgroundSound = () => {
@@ -38,7 +48,7 @@ const Bedroom = () => {
     backgroundAudioRef.current.pause();
 
     // Calculamos un retraso aleatorio entre 0 y 10 segundos.
-    const randomDelay = Math.random() * 2000;
+    const randomDelay = Math.random() * 10000; // 10 segundos en milisegundos
 
     // Iniciamos el sonido nuevamente después del retraso.
     setTimeout(() => {
@@ -49,10 +59,12 @@ const Bedroom = () => {
   };
 
   const shakeCamera = () => {
-    cameraShakeOffset.current =
-      Math.sin(performance.now() * shakeFrequency) * shakeAmplitude;
-    if (cameraRef.current && isCameraShaking.current) {
-      cameraRef.current.position.y = 5 + cameraShakeOffset.current;
+    if (isLeftClickPressed) {
+      cameraShakeOffset.current =
+        Math.sin(performance.now() * shakeFrequency) * shakeAmplitude;
+      if (cameraRef.current && isCameraShaking.current) {
+        cameraRef.current.position.y = 5 + cameraShakeOffset.current;
+      }
     }
   };
 
@@ -73,10 +85,13 @@ const Bedroom = () => {
       restartBackgroundSound
     );
 
-    if (firstLeftClick) {
-      // Iniciar el sonido de fondo al cargar el componente si se ha dado el primer clic izquierdo.
-      backgroundAudioRef.current.loop = true;
+    // Iniciar el sonido de fondo al cargar el componente.
+    backgroundAudioRef.current.loop = true;
+
+    // Iniciar el sonido de fondo solo si no se ha iniciado ya.
+    if (!isBackgroundSoundStarted) {
       backgroundAudioRef.current.play();
+      setIsBackgroundSoundStarted(true);
     }
 
     return () => {
@@ -87,7 +102,15 @@ const Bedroom = () => {
         restartBackgroundSound
       );
     };
-  }, [firstLeftClick]);
+  }, [isBackgroundSoundStarted]);
+
+  // Nueva función para iniciar el sonido de fondo al dar el primer paso.
+  const startBackgroundSound = () => {
+    if (!isBackgroundSoundStarted) {
+      backgroundAudioRef.current.play();
+      setIsBackgroundSoundStarted(true);
+    }
+  };
 
   const handleContextMenu = (e) => {
     e.preventDefault();
@@ -95,49 +118,87 @@ const Bedroom = () => {
     prevMouseX.current = e.clientX;
   };
 
-  const handleMouseUp = () => {
-    isDragging.current = false;
-    prevMouseX.current = null;
-    isMovingForward.current = false;
-    isCameraShaking.current = false;
-    audioRef.current.pause();
-    audioRef.current.currentTime = 0;
-    audioEndRef.current.play();
+  const handleMouseMove = (e) => {
+    if (isDragging.current) {
+      if (isRotatingCamera.current) {
+        const deltaX = e.clientX - prevMouseX.current;
+        const rotationSpeed = 0.005; // Ajusta la velocidad de rotación
+        const rotationY = cameraRef.current.rotation.y - deltaX * rotationSpeed;
+        cameraRef.current.rotation.y = rotationY;
+      }
+      prevMouseX.current = e.clientX;
+    }
   };
 
-  const handleMouseDown = () => {
-    isMovingForward.current = true;
-    isCameraShaking.current = true;
+  const handleMouseDown = (e) => {
+    if (e.button === 0) {
+      // Clic izquierdo: Avanzar
+      isMovingForward.current = true;
+      isCameraShaking.current = true;
 
-    const moveForward = () => {
-      if (isMovingForward.current && cameraRef.current) {
-        cameraRef.current.position.x -=
-          movementDirection.current.x * movementSpeed;
-        cameraRef.current.position.z -=
-          movementDirection.current.z * movementSpeed;
-        requestAnimationFrame(moveForward);
-        audioRef.current.play();
-      }
-    };
+      // Calcular la nueva dirección de movimiento basada en la rotación de la cámara
+      const angle = cameraRef.current.rotation.y;
+      movementDirection.current = {
+        x: Math.sin(-angle), // Cambiar el signo
+        z: Math.cos(-angle), // Cambiar el signo
+      };
 
-    moveForward();
+      const moveForward = () => {
+        if (isMovingForward.current && cameraRef.current) {
+          cameraRef.current.position.x += movementDirection.current.x * movementSpeed; // Cambiar el signo
+          cameraRef.current.position.z += movementDirection.current.z * movementSpeed; // Cambiar el signo
+          requestAnimationFrame(moveForward);
+          audioRef.current.play();
+          // Nuevo: Iniciar el sonido de fondo al dar el primer paso.
+          startBackgroundSound();
+        }
+      };
 
-    // Nuevo: Registrar que se ha dado el primer clic izquierdo.
-    setFirstLeftClick(true);
+      moveForward();
+
+      setIsLeftClickPressed(true);
+      setIsLeftClickReleased(false); // Reiniciar el estado de liberación
+      setIsRightClickPressed(false);
+    } else if (e.button === 2) {
+      // Clic derecho: Rotar la cámara
+      isRotatingCamera.current = true;
+      setIsRightClickPressed(true);
+      setIsLeftClickPressed(false);
+    }
+  };
+
+  const handleMouseUp = (e) => {
+    isDragging.current = false;
+    isRotatingCamera.current = false;
+    prevMouseX.current = null;
+
+    // Detener el movimiento cuando se suelta el clic izquierdo o derecho
+    isMovingForward.current = false;
+    setIsRightClickPressed(false);
+
+    if (e.button === 0) {
+      // Si se soltó el clic izquierdo, reproducir wood-end y detener wood
+      audioRef.current.pause();
+      audioEndRef.current.currentTime = 0;
+      audioEndRef.current.play();
+      setIsLeftClickPressed(false);
+      setIsLeftClickReleased(true);
+    }
   };
 
   useEffect(() => {
-    stop(); // Detener la vibración de la cámara al desmontar el componente.
+    stop();
 
-    // Agregar y eliminar oyentes de eventos de ratón en el lienzo 3D.
     gl.domElement.addEventListener("contextmenu", handleContextMenu);
-    gl.domElement.addEventListener("mouseup", handleMouseUp);
+    gl.domElement.addEventListener("mousemove", handleMouseMove);
     gl.domElement.addEventListener("mousedown", handleMouseDown);
+    gl.domElement.addEventListener("mouseup", handleMouseUp);
 
     return () => {
       gl.domElement.removeEventListener("contextmenu", handleContextMenu);
-      gl.domElement.removeEventListener("mouseup", handleMouseUp);
+      gl.domElement.removeEventListener("mousemove", handleMouseMove);
       gl.domElement.removeEventListener("mousedown", handleMouseDown);
+      gl.domElement.removeEventListener("mouseup", handleMouseUp);
     };
   }, [gl.domElement]);
 
