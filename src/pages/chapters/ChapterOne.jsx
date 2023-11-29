@@ -1,12 +1,16 @@
 import ChapterOneExperience from "../../components/experiences/chapters/ChapterOneExperience";
-import { Canvas } from "@react-three/fiber";
+import StartGameC1 from "../../components/experiences/chapters/StartGameC1"
+
+
 
 const ChapterOne = () => {
   return (
-    <Canvas shadows>
+    <>
       <ChapterOneExperience />;
-    </Canvas>
+      <StartGameC1 />
+    </>
   );
 };
 
 export default ChapterOne;
+

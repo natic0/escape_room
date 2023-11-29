@@ -72,9 +72,12 @@ const Bedroom = () => {
 
   useEffect(() => {
     // Configurar la posición y orientación inicial de la cámara.
-    camera.position.set(1, 5, -14);
+    camera.position.set(0, 5, -14);
     camera.lookAt(2, 2, 2);
     cameraRef.current = camera;
+    cameraRef.current.rotation.x = 0;
+    cameraRef.current.rotation.y = 3.144;
+    cameraRef.current.rotation.z = 0;
   }, [camera]);
 
   // Nuevo: Control de reproducción del sonido de fondo al inicio.
@@ -146,7 +149,7 @@ const Bedroom = () => {
       const moveForward = () => {
         if (isMovingForward.current && cameraRef.current) {
           cameraRef.current.position.x += movementDirection.current.x * movementSpeed; // Cambiar el signo
-          cameraRef.current.position.z += movementDirection.current.z * movementSpeed; // Cambiar el signo
+          cameraRef.current.position.z -= movementDirection.current.z * movementSpeed; // Cambiar el signo
           requestAnimationFrame(moveForward);
           audioRef.current.play();
           // Nuevo: Iniciar el sonido de fondo al dar el primer paso.
