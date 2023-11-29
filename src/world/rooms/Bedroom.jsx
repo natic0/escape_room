@@ -63,7 +63,7 @@ const Bedroom = () => {
       cameraShakeOffset.current =
         Math.sin(performance.now() * shakeFrequency) * shakeAmplitude;
       if (cameraRef.current && isCameraShaking.current) {
-        cameraRef.current.position.y = 5 + cameraShakeOffset.current;
+        cameraRef.current.position.y = 6 + cameraShakeOffset.current;
       }
     }
   };
@@ -72,7 +72,11 @@ const Bedroom = () => {
 
   useEffect(() => {
     // Configurar la posición y orientación inicial de la cámara.
+<<<<<<< Updated upstream
     camera.position.set(0, 5, -14);
+=======
+    camera.position.set(0, 6, -14);
+>>>>>>> Stashed changes
     camera.lookAt(2, 2, 2);
     cameraRef.current = camera;
     cameraRef.current.rotation.x = 0;
